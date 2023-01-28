@@ -4,6 +4,10 @@ from tkinter import ttk
 from titlebar import sun_valley_titlebar
 import subprocess
 import webbrowser
+import psutil
+from tkinter.ttk import *
+import ping3
+from ping3 import ping
 
 selected_checkboxes = []
 
@@ -231,12 +235,16 @@ app_list_tab6 = {
     
 }
 
+app_list_tab7 = {
+    
+}
+
 WINDOW_TITLE = " Shades Tweaker  |  Windows 10 - 11"
-WINDOW_MINSIZE = (1110, 500)
+WINDOW_MINSIZE = (1200, 500)
 WINDOW_POSITION = (580, 250)
 root = tk.Tk()
 root.overrideredirect(True)
-root.maxsize(1110, 500)
+root.maxsize(1200, 500)
 root.minsize(WINDOW_MINSIZE[0], WINDOW_MINSIZE[1])
 root.geometry(str(WINDOW_MINSIZE[0]) + "x" + str(WINDOW_MINSIZE[1]) + "+" + str(WINDOW_POSITION[0]) + "+" + str(WINDOW_POSITION[1]))
 root.title(WINDOW_TITLE)
@@ -264,19 +272,52 @@ tab3 = ttk.Frame(tabs)
 tab4 = ttk.Frame(tabs)
 tab5 = ttk.Frame(tabs)
 tab6 = ttk.Frame(tabs)
+tab7 = ttk.Frame(tabs)
 tabs.add(tab1, text="⚙️ Windows Services ( Disable )")
 tabs.add(tab2, text="🎨 Customization & personalization")
 tabs.add(tab3, text="🎮 Gaming Tweaks")
 tabs.add(tab4, text="📦 Install Packages ( WinGET)")
 tabs.add(tab5, text="🧹 Windows Debloater")
-tabs.add(tab6, text="🖤 About")
-info_label1 = ttk.Label(tab6, text="Shades Tweaker is a tool that includes many features for Windows 10 and 11.\nI am not responsible for any problems that may occur on your computer, the control\nis completely in your hands. If you liked this application, please do not hesitate to\n                                                            support me.",wraplength=1200, font=(20))
+tabs.add(tab6, text="💻 PC Stats")
+tabs.add(tab7, text="🖤 About")
+info_label1 = ttk.Label(tab7, text="Shades Tweaker is a tool that includes many features for Windows 10 and 11.\nI am not responsible for any problems that may occur on your computer, the control\nis completely in your hands. If you liked this application, please do not hesitate to\n                                                            support me.",wraplength=1200, font=(20))
 info_label1.grid(row=2, column=2, columnspan=1, padx=280, pady=50 ,sticky="nse")
-donate_button = ttk.Button(tab6, text="Donate 💸", command=lambda: webbrowser.open("https://www.buymeacoffee.com/berkayay"))
+donate_button = ttk.Button(tab7, text="Donate 💸", command=lambda: webbrowser.open("https://www.buymeacoffee.com/berkayay"))
 donate_button.grid(row=4, column=2, columnspan=1, padx=280, pady=5)
-source = ttk.Button(tab6, text="Source Code 🐍", command=lambda: webbrowser.open("https://pbs.twimg.com/media/EX6F_sqWAAQF1Mw.jpg:large"))
+source = ttk.Button(tab7, text="Source Code 🐍", command=lambda: webbrowser.open("https://pbs.twimg.com/media/EX6F_sqWAAQF1Mw.jpg:large"))
 source.grid(row=5, column=2, columnspan=1, padx=280, pady=5)
 tabs.grid()
+
+def update_stats():
+    cpu_percent = psutil.cpu_percent()
+    memory_percent = psutil.virtual_memory().percent
+    memory_total = psutil.virtual_memory().total / (1024.0 ** 3)
+    memory_available = psutil.virtual_memory().available / (1024.0 ** 3)
+    memory_used = memory_total - memory_available
+
+    disk_usage = psutil.disk_usage('/')
+    disk_total = disk_usage.total / (1024.0 ** 3)
+    disk_used = disk_usage.used / (1024.0 ** 3)
+    disk_free = disk_usage.free / (1024.0 ** 3)
+    disk_usage = psutil.disk_usage('/')
+    
+    response_time = int(ping3.ping('google.com', unit='ms'))
+    ping_label.config(text="Ping: " + str(response_time) + " ms")
+
+    cpu_label.config(text="CPU Usage: " + str(cpu_percent) + "%")
+    memory_label.config(text="Memory Usage: " + f"{memory_used:.2f} GB / {memory_total:.2f} GB")
+    disk_label.config(text="Disk Usage: " + f"{disk_used:.2f} GB / {disk_total:.2f} GB")
+    tab6.after(1000, update_stats)
+
+cpu_label = Label(tab6, text="CPU Usage: ")
+cpu_label.place(x=10, y=10)
+memory_label = Label(tab6, text="Memory Usage: ")
+memory_label.place(x=10, y=40)
+disk_label = Label(tab6, text="Disk Usage: ")
+disk_label.place(x=10, y=70)
+ping_label = Label(tab6, text="Ping: ")
+ping_label.place(x=10, y=100)
+tab6.after(1000, update_stats)
 
 app_frame_tab1 = ttk.Frame(tab1)
 app_frame_tab1.grid()
@@ -290,6 +331,8 @@ app_frame_tab5 = ttk.Frame(tab5)
 app_frame_tab5.grid()
 app_frame_tab6 = ttk.Frame(tab6)
 app_frame_tab6.grid()
+app_frame_tab7 = ttk.Frame(tab7)
+app_frame_tab7.grid()
     
 for i , (key,value) in enumerate(app_list_tab1.items()):
     var = tk.IntVar()
@@ -325,7 +368,14 @@ for i , (key,value) in enumerate(app_list_tab6.items()):
     var = tk.IntVar()
     checkbox = ttk.Checkbutton(tab6, text=key, variable=var)
     checkbox.grid(row=i//3, column=i%3, padx=5, pady=1,sticky="w")
-    selected_checkboxes.append((checkbox, var, "tab6"))    
+    selected_checkboxes.append((checkbox, var, "tab6"))  
+    
+for i , (key,value) in enumerate(app_list_tab7.items()):
+    var = tk.IntVar()
+    checkbox = ttk.Checkbutton(tab7, text=key, variable=var)
+    checkbox.grid(row=i//3, column=i%3, padx=5, pady=1,sticky="w")
+    selected_checkboxes.append((checkbox, var, "tab7")) 
+  
 # App Frame
 app_frame = ttk.Frame(big_frame)
 app_frame.pack()
@@ -346,6 +396,8 @@ def apply_changes():
                 selected_values.append(app_list_tab5[checkbox["text"]])
             elif tab == "tab6":
                 selected_values.append(app_list_tab6[checkbox["text"]])
+            elif tab == "tab7":
+                selected_values.append(app_list_tab7[checkbox["text"]])
     with open("tweaker.bat", "w") as f:
             f.write("@echo off \nif not \"%1\"==\"am_admin\" (powershell start -verb runas '%0' am_admin & exit /b)\n")
             for value in selected_values:
@@ -385,7 +437,7 @@ grid_frame_tab4.columnconfigure(2, minsize=100)
 grid_frame_tab4.columnconfigure(3, minsize=100)
 
 # Tab5 buttons
-grid_frame_tab5 = ttk.Frame(tab4)
+grid_frame_tab5 = ttk.Frame(tab5)
 grid_frame_tab5.grid()
 grid_frame_tab5.columnconfigure(0, minsize=100)
 grid_frame_tab5.columnconfigure(1, minsize=100)
@@ -393,12 +445,21 @@ grid_frame_tab5.columnconfigure(2, minsize=100)
 grid_frame_tab5.columnconfigure(3, minsize=100)
 
 # Tab6 buttons
-grid_frame_tab6 = ttk.Frame(tab4)
+grid_frame_tab6 = ttk.Frame(tab6)
 grid_frame_tab6.grid()
 grid_frame_tab6.columnconfigure(0, minsize=100)
 grid_frame_tab6.columnconfigure(1, minsize=100)
 grid_frame_tab6.columnconfigure(2, minsize=100)
 grid_frame_tab6.columnconfigure(3, minsize=100)
+
+
+# Tab7 buttons
+grid_frame_tab7 = ttk.Frame(tab7)
+grid_frame_tab7.grid()
+grid_frame_tab7.columnconfigure(0, minsize=100)
+grid_frame_tab7.columnconfigure(1, minsize=100)
+grid_frame_tab7.columnconfigure(2, minsize=100)
+grid_frame_tab7.columnconfigure(3, minsize=100)
 
 checkboxes = []
 
