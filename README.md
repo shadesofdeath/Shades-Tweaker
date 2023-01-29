@@ -1,7 +1,9 @@
 # Shades Tweaker
 
 
-<img src="https://github.com/shadesofdeath/Shades-Tweaker/raw/main/assets/logo.png" width="200" height="200" style="margin: 0 auto;">
+<p align="center">
+  <img src="https://github.com/shadesofdeath/Shades-Tweaker/raw/main/assets/logo.png" width="200" height="200">
+</p>
 
 ### ⚠️ About 
 
