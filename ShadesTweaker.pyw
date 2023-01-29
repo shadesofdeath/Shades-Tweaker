@@ -8,6 +8,8 @@ import psutil
 from tkinter.ttk import *
 import ping3
 from ping3 import ping
+import platform
+import GPUtil
 
 selected_checkboxes = []
 
@@ -289,6 +291,12 @@ source.grid(row=5, column=2, columnspan=1, padx=280, pady=5)
 tabs.grid()
 
 def update_stats():
+    gpu_info = GPUtil.getGPUs()[0]
+    system_name = platform.system()
+    system_version = platform.release()
+    windows_build_number = platform.win32_ver()[2]
+    bios_info = psutil.sensors_battery()[0]
+    system_info_label.config(text="System: " + platform.system() + "\n\n" + "Version: " + platform.release() + "\n\n" + "Build: " + platform.version() + "\n\n" + "BIOS: " + platform.processor())
     cpu_percent = psutil.cpu_percent()
     memory_percent = psutil.virtual_memory().percent
     memory_total = psutil.virtual_memory().total / (1024.0 ** 3)
@@ -309,6 +317,8 @@ def update_stats():
     disk_label.config(text="Disk Usage: " + f"{disk_used:.2f} GB / {disk_total:.2f} GB")
     tab6.after(1000, update_stats)
 
+system_info_label = Label(tab6, text="System: ")
+system_info_label.place(x=10, y=130)
 cpu_label = Label(tab6, text="CPU Usage: ")
 cpu_label.place(x=10, y=10)
 memory_label = Label(tab6, text="Memory Usage: ")
