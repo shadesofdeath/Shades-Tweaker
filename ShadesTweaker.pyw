@@ -4,12 +4,7 @@ from tkinter import ttk
 from titlebar import sun_valley_titlebar
 import subprocess
 import webbrowser
-import psutil
 from tkinter.ttk import *
-import ping3
-from ping3 import ping
-import platform
-import GPUtil
 
 selected_checkboxes = []
 
@@ -76,6 +71,11 @@ app_list_tab2 = {
     "Large Taskbar":'REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /V TaskbarSi /T REG_DWORD /D 2 /F',
     "Enable Seconds Taskbar Clock (Win10)":'powershell.exe Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name ShowSecondsInSystemClock -Value 1 -Force',
     "Enable Hidden Files & Folders":'Reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "Hidden" /t REG_DWORD /d "1" /f',
+    "Disable Lockscreen":'Reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "DisableLockWorkstation" /t REG_DWORD /d "1" /f',
+    "Add 'Copy As Path' Context Menu":'Reg.exe add "HKCR\Allfilesystemobjects\shell\windows.copyaspath" /ve /t REG_SZ /d "Copy &as path" /f && Reg.exe add "HKCR\Allfilesystemobjects\shell\windows.copyaspath" /v "Icon" /t REG_SZ /d "imageres.dll,-5302" /f && Reg.exe add "HKCR\Allfilesystemobjects\shell\windows.copyaspath" /v "InvokeCommandOnSelection" /t REG_DWORD /d "1" /f && Reg.exe add "HKCR\Allfilesystemobjects\shell\windows.copyaspath" /v "VerbHandler" /t REG_SZ /d "{f3d06e7c-1e45-4a26-847e-f9fcdee59be0}" /f && Reg.exe add "HKCR\Allfilesystemobjects\shell\windows.copyaspath" /v "VerbName" /t REG_SZ /d "copyaspath" /f',
+    "Restore Windows Photo Viewer":'Reg.exe add "HKCU\SOFTWARE\Classes\.bmp" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.cr2" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.dib" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.gif" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.ico" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.jfif" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.jpe" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.jpeg" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.jpg" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.jxr" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.png" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.tif" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.tiff" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Classes\.wdp" /ve /t REG_SZ /d "PhotoViewer.FileAssoc.Tiff" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.bmp\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cr2\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.dib\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" / f&& Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gif\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.ico\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jpeg\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.bmp\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jfif\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jpe\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jxr\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jpeg\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jpg\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.png\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.tif\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.tiff\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f && Reg.exe add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wdp\OpenWithProgids" /v "PhotoViewer.FileAssoc.Tiff" /t REG_NONE /d "" /f',
+    "Add Permanently Delete to Context Menu":'Reg.exe add "HKCR\AllFilesystemObjects\shell\Windows.PermanentDelete" /v "CommandStateSync" /t REG_SZ /d "" /f && Reg.exe add "HKCR\AllFilesystemObjects\shell\Windows.PermanentDelete" /v "ExplorerCommandHandler" /t REG_SZ /d "{E9571AB2-AD92-4ec6-8924-4E5AD33790F5}" /f && Reg.exe add "HKCR\AllFilesystemObjects\shell\Windows.PermanentDelete" /v "Icon" /t REG_SZ /d "shell32.dll,-240" /f && Reg.exe add "HKCR\AllFilesystemObjects\shell\Windows.PermanentDelete" /v "Position" /t REG_SZ /d "Bottom" /f',
+    "Disable Search Web with Bing in Windows Search":'REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /V BingSearchEnabled /T REG_DWORD /D 1 /F',
 }
 
 app_list_tab3 = {
@@ -237,13 +237,9 @@ app_list_tab6 = {
     
 }
 
-app_list_tab7 = {
-    
-}
-
 WINDOW_TITLE = " Shades Tweaker  |  Windows 10 - 11"
 WINDOW_MINSIZE = (1200, 500)
-WINDOW_POSITION = (580, 250)
+WINDOW_POSITION = (400, 200)
 root = tk.Tk()
 root.overrideredirect(True)
 root.maxsize(1200, 500)
@@ -274,60 +270,19 @@ tab3 = ttk.Frame(tabs)
 tab4 = ttk.Frame(tabs)
 tab5 = ttk.Frame(tabs)
 tab6 = ttk.Frame(tabs)
-tab7 = ttk.Frame(tabs)
 tabs.add(tab1, text="⚙️ Windows Services ( Disable )")
 tabs.add(tab2, text="🎨 Customization & personalization")
 tabs.add(tab3, text="🎮 Gaming Tweaks")
 tabs.add(tab4, text="📦 Install Packages ( WinGET)")
 tabs.add(tab5, text="🧹 Windows Debloater")
-tabs.add(tab6, text="💻 PC Stats")
-tabs.add(tab7, text="🖤 About")
-info_label1 = ttk.Label(tab7, text="Shades Tweaker is a tool that includes many features for Windows 10 and 11.\nI am not responsible for any problems that may occur on your computer, the control\nis completely in your hands. If you liked this application, please do not hesitate to\n                                                            support me.",wraplength=1200, font=(20))
-info_label1.grid(row=2, column=2, columnspan=1, padx=280, pady=50 ,sticky="nse")
-donate_button = ttk.Button(tab7, text="Donate 💸", command=lambda: webbrowser.open("https://www.buymeacoffee.com/berkayay"))
-donate_button.grid(row=4, column=2, columnspan=1, padx=280, pady=5)
-source = ttk.Button(tab7, text="Source Code 🐍", command=lambda: webbrowser.open("https://pbs.twimg.com/media/EX6F_sqWAAQF1Mw.jpg:large"))
-source.grid(row=5, column=2, columnspan=1, padx=280, pady=5)
+tabs.add(tab6, text="🖤 About")
+info_label1 = ttk.Label(tab6, text="Shades Tweaker is a tool that includes many features for Windows 10 and 11.\nI am not responsible for any problems that may occur on your computer, the control\nis completely in your hands. If you liked this application, please do not hesitate to\n                                                            support me.",wraplength=1200, font=(20))
+info_label1.grid(row=2, column=2, columnspan=1, padx=300, pady=50 ,sticky="nse")
+donate_button = ttk.Button(tab6, text="Donate 💸", command=lambda: webbrowser.open("https://www.buymeacoffee.com/berkayay"))
+donate_button.grid(row=4, column=2, columnspan=1, padx=300, pady=5)
+source = ttk.Button(tab6, text="Source Code 🐍", command=lambda: webbrowser.open("https://github.com/shadesofdeath/Shades-Tweaker"))
+source.grid(row=5, column=2, columnspan=1, padx=300, pady=5)
 tabs.grid()
-
-def update_stats():
-    gpu_info = GPUtil.getGPUs()[0]
-    system_name = platform.system()
-    system_version = platform.release()
-    windows_build_number = platform.win32_ver()[2]
-    bios_info = psutil.sensors_battery()[0]
-    system_info_label.config(text="System: " + platform.system() + "\n\n" + "Version: " + platform.release() + "\n\n" + "Build: " + platform.version() + "\n\n" + "BIOS: " + platform.processor())
-    cpu_percent = psutil.cpu_percent()
-    memory_percent = psutil.virtual_memory().percent
-    memory_total = psutil.virtual_memory().total / (1024.0 ** 3)
-    memory_available = psutil.virtual_memory().available / (1024.0 ** 3)
-    memory_used = memory_total - memory_available
-
-    disk_usage = psutil.disk_usage('/')
-    disk_total = disk_usage.total / (1024.0 ** 3)
-    disk_used = disk_usage.used / (1024.0 ** 3)
-    disk_free = disk_usage.free / (1024.0 ** 3)
-    disk_usage = psutil.disk_usage('/')
-    
-    response_time = int(ping3.ping('google.com', unit='ms'))
-    ping_label.config(text="Ping: " + str(response_time) + " ms")
-
-    cpu_label.config(text="CPU Usage: " + str(cpu_percent) + "%")
-    memory_label.config(text="Memory Usage: " + f"{memory_used:.2f} GB / {memory_total:.2f} GB")
-    disk_label.config(text="Disk Usage: " + f"{disk_used:.2f} GB / {disk_total:.2f} GB")
-    tab6.after(1000, update_stats)
-
-system_info_label = Label(tab6, text="System: ")
-system_info_label.place(x=10, y=130)
-cpu_label = Label(tab6, text="CPU Usage: ")
-cpu_label.place(x=10, y=10)
-memory_label = Label(tab6, text="Memory Usage: ")
-memory_label.place(x=10, y=40)
-disk_label = Label(tab6, text="Disk Usage: ")
-disk_label.place(x=10, y=70)
-ping_label = Label(tab6, text="Ping: ")
-ping_label.place(x=10, y=100)
-tab6.after(1000, update_stats)
 
 app_frame_tab1 = ttk.Frame(tab1)
 app_frame_tab1.grid()
@@ -341,8 +296,6 @@ app_frame_tab5 = ttk.Frame(tab5)
 app_frame_tab5.grid()
 app_frame_tab6 = ttk.Frame(tab6)
 app_frame_tab6.grid()
-app_frame_tab7 = ttk.Frame(tab7)
-app_frame_tab7.grid()
     
 for i , (key,value) in enumerate(app_list_tab1.items()):
     var = tk.IntVar()
@@ -379,13 +332,7 @@ for i , (key,value) in enumerate(app_list_tab6.items()):
     checkbox = ttk.Checkbutton(tab6, text=key, variable=var)
     checkbox.grid(row=i//3, column=i%3, padx=5, pady=1,sticky="w")
     selected_checkboxes.append((checkbox, var, "tab6"))  
-    
-for i , (key,value) in enumerate(app_list_tab7.items()):
-    var = tk.IntVar()
-    checkbox = ttk.Checkbutton(tab7, text=key, variable=var)
-    checkbox.grid(row=i//3, column=i%3, padx=5, pady=1,sticky="w")
-    selected_checkboxes.append((checkbox, var, "tab7")) 
-  
+
 # App Frame
 app_frame = ttk.Frame(big_frame)
 app_frame.pack()
@@ -406,8 +353,6 @@ def apply_changes():
                 selected_values.append(app_list_tab5[checkbox["text"]])
             elif tab == "tab6":
                 selected_values.append(app_list_tab6[checkbox["text"]])
-            elif tab == "tab7":
-                selected_values.append(app_list_tab7[checkbox["text"]])
     with open("tweaker.bat", "w") as f:
             f.write("@echo off \nif not \"%1\"==\"am_admin\" (powershell start -verb runas '%0' am_admin & exit /b)\n")
             for value in selected_values:
@@ -461,15 +406,6 @@ grid_frame_tab6.columnconfigure(0, minsize=100)
 grid_frame_tab6.columnconfigure(1, minsize=100)
 grid_frame_tab6.columnconfigure(2, minsize=100)
 grid_frame_tab6.columnconfigure(3, minsize=100)
-
-
-# Tab7 buttons
-grid_frame_tab7 = ttk.Frame(tab7)
-grid_frame_tab7.grid()
-grid_frame_tab7.columnconfigure(0, minsize=100)
-grid_frame_tab7.columnconfigure(1, minsize=100)
-grid_frame_tab7.columnconfigure(2, minsize=100)
-grid_frame_tab7.columnconfigure(3, minsize=100)
 
 checkboxes = []
 
